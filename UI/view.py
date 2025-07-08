@@ -6,39 +6,38 @@ class View(ft.UserControl):
         super().__init__()
         # page stuff
         self._page = page
-        self._page.title = "Template application using MVC and DAO"
+        self._page.title = "Simulazione esame"
         self._page.horizontal_alignment = 'CENTER'
         self._page.theme_mode = ft.ThemeMode.DARK
         # controller (it is not initialized. Must be initialized in the main, after the controller is created)
         self._controller = None
         # graphical elements
         self._title = None
-        self.txt_name = None
-        self.btn_hello = None
+        self._ddLocalization = None
+        self._btn_grafo = None
+        self._btn_statistiche = None
         self.txt_result = None
         self.txt_container = None
 
     def load_interface(self):
         # title
-        self._title = ft.Text("Hello World", color="blue", size=24)
+        self._title = ft.Text("Simulazione esame", color="blue", size=24)
         self._page.controls.append(self._title)
 
-        #ROW with some controls
-        # text field for the name
-        self.txt_name = ft.TextField(
-            label="name",
-            width=200,
-            hint_text="Insert a your name"
-        )
-
-        # button for the "hello" reply
-        self.btn_hello = ft.ElevatedButton(text="Hello", on_click=self._controller.handle_hello)
-        row1 = ft.Row([self.txt_name, self.btn_hello],
+        self._ddLocalization = ft.Dropdown(label="Localization")
+        self._controller.fillDDLoc()
+        self._btn_grafo = ft.ElevatedButton(text="Crea grafo", on_click=self._controller.handle_creaGrafo)
+        self._btn_statistiche = ft.ElevatedButton(text="Statistiche", on_click=self._controller.handle_statistiche)
+        row1 = ft.Row([ self._btn_grafo, self._ddLocalization, self._btn_statistiche],
                       alignment=ft.MainAxisAlignment.CENTER)
         self._page.controls.append(row1)
 
+        self._btn_ricorsione = ft.ElevatedButton(text="Ricorsione", on_click=self._controller.handle_ricorsione)
+        row2 = ft.Row([ self._btn_ricorsione],
+                     alignment=ft.MainAxisAlignment.CENTER)
+        self._page.controls.append(row2)
         # List View where the reply is printed
-        self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+        self.txt_result = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=False)
         self._page.controls.append(self.txt_result)
         self._page.update()
 
